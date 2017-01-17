@@ -1,26 +1,23 @@
 package com.doozyinfosystem.sample.dataproject;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ListViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-
+import android.view.View;
+import android.widget.Toast;
 
 import com.doozyinfosystem.sample.dataproject.category.DataItem;
+import com.doozyinfosystem.sample.dataproject.sample.DataItemAdapter;
 import com.doozyinfosystem.sample.dataproject.sample.SampleDataProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
+    private static final String SIGN_IN = "Sign In";
     private List<DataItem> dataItemList = SampleDataProvider.getItemList();
     private List<String> dataNameList=new ArrayList<>();
 
@@ -43,15 +40,17 @@ public class MainActivity extends AppCompatActivity {
             dataNameList.add(d.getItemName());
         }
         Collections.sort(dataNameList);
-        DataArrayAdapter adapter = new DataArrayAdapter(this, dataNameList);
-        ListView listView = (ListView) findViewById(R.id.data_display_list);
-        listView.setAdapter(adapter);
+        DataItemAdapter adapter = new DataItemAdapter(this, dataNameList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_items);
+        recyclerView.setAdapter(adapter);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        menu.add(SIGN_IN);
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -62,7 +61,11 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+switch (item.getItemId())
+{
+    case R.id.sign_in :
+        Toast.makeText(this,"Sign form",Toast.LENGTH_LONG).show();
+}
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
