@@ -1,10 +1,15 @@
 package com.doozyinfosystem.sample.dataproject.category;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.UUID;
+
 /**
  * Created by Doozy on 15-01-2017.
  */
 
-public class DataItem {
+public class DataItem implements Parcelable {
 
     private String itemId;
     private String itemName;
@@ -18,7 +23,12 @@ public class DataItem {
     }
 
     public DataItem(String itemId, String itemName, String category, String itemDescription, int sortId, double itemPrice, String itemImage) {
-        this.itemId = itemId;
+        if (itemId != null) {
+            this.itemId = itemId;
+        } else {
+            this.itemId = UUID.randomUUID().toString();
+        }
+
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.category = category;
@@ -95,4 +105,42 @@ public class DataItem {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.itemId);
+        dest.writeString(this.itemName);
+        dest.writeString(this.itemDescription);
+        dest.writeString(this.category);
+        dest.writeInt(this.sortId);
+        dest.writeDouble(this.itemPrice);
+        dest.writeString(this.itemImage);
+    }
+
+    protected DataItem(Parcel in) {
+        this.itemId = in.readString();
+        this.itemName = in.readString();
+        this.itemDescription = in.readString();
+        this.category = in.readString();
+        this.sortId = in.readInt();
+        this.itemPrice = in.readDouble();
+        this.itemImage = in.readString();
+    }
+
+    public static final Parcelable.Creator<DataItem> CREATOR = new Parcelable.Creator<DataItem>() {
+        @Override
+        public DataItem createFromParcel(Parcel source) {
+            return new DataItem(source);
+        }
+
+        @Override
+        public DataItem[] newArray(int size) {
+            return new DataItem[size];
+        }
+    };
 }

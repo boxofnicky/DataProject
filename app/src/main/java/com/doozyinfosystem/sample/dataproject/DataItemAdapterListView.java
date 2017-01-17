@@ -22,12 +22,12 @@ import java.util.zip.Inflater;
 import com.doozyinfosystem.sample.dataproject.category.DataItem;
 import com.doozyinfosystem.sample.dataproject.sample.*;
 
-public class DataArrayAdapter extends ArrayAdapter<String> {
+public class DataItemAdapterListView extends ArrayAdapter<String> {
     private List<String> itemList;
     private View inflater;
     private Context context;
 
-    public DataArrayAdapter(Context context, List<String> itemList) {
+    public DataItemAdapterListView(Context context, List<String> itemList) {
         super(context, R.layout.list_view, itemList);
         this.itemList = itemList;
         inflater = LayoutInflater.from(context).inflate(R.layout.list_view, null);
@@ -44,7 +44,7 @@ public class DataArrayAdapter extends ArrayAdapter<String> {
         TextView nameText = (TextView) convertView.findViewById(R.id.name_text_list);
         nameText.setText(SampleDataProvider.getDataItemMap().get(itemList.get(position)).getItemName());
         TextView descText = (TextView) convertView.findViewById(R.id.desc_text_list);
-        descText.setText(SampleDataProvider.getDataItemMap().get(itemList.get(position)).getItemDescription());
+        descText.setText(SampleDataProvider.getDataItemMap().get(itemList.get(position)).getCategory());
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_image);
         InputStream inputStream = null;
         try {
@@ -54,6 +54,14 @@ public class DataArrayAdapter extends ArrayAdapter<String> {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
